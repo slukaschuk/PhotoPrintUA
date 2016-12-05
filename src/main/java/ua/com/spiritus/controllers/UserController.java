@@ -31,7 +31,7 @@ public class UserController {
         catch (Exception ex) {
             return "Error creating the user: " + ex.toString();
         }
-        return "User succesfully created! (id = " + user.getId() + ")";
+        return "User succesfully created! (id = " + user.getUserId() + ")";
     }
 
 
@@ -55,7 +55,7 @@ public class UserController {
         String userId;
         try {
             User user = userService.findBylogin(login);
-            userId = String.valueOf(user.getId());
+            userId = String.valueOf(user.getUserId());
         }
         catch (Exception ex) {
             return "User not found";
