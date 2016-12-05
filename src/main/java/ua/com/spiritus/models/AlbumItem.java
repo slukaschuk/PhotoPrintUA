@@ -16,6 +16,7 @@ public class AlbumItem {
     @Column(name = "caption")
     private String caption;
     @Column(name = "itemdate")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date itemDate;
     @Column(name = "image")
     private byte[] image;
