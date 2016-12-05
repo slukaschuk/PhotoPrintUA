@@ -9,6 +9,7 @@ import java.util.Set;
 @Table(name="user")
 public class User implements Serializable {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer userId;
@@ -101,7 +102,6 @@ public class User implements Serializable {
                 ", login='" + login + '\'' +
                 ", firtsname='" + firtsName + '\'' +
                 ", lastsname='" + lastName + '\'' +
-                ", password='" + password + '\'' +
                 '}';
     }
 }
