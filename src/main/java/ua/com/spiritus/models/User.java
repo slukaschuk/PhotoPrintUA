@@ -6,29 +6,31 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name="user")
+@Table(name = "user")
 public class User implements Serializable {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer userId;
-
+    @Column(name = "login")
     private String login;
+    @Column(name = "firstname")
     private String firtsName;
+    @Column(name = "lastname")
     private String lastName;
+    @Column(name = "password")
     private String password;
 
     public User() {
     }
 
     public User(String login, String password) {
-        this.login = login;
-        this.password = password;
+        this.login      = login;
+        this.password   = password;
     }
 
-
-     public Integer getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
@@ -67,7 +69,6 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-
 
 
     @Override

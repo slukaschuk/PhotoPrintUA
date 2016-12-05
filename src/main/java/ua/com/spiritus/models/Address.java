@@ -32,10 +32,10 @@ public class Address {
     }
 
     public Address(String phone, String zip, String country, String street) {
-        this.phone = phone;
-        this.zip = zip;
-        this.country = country;
-        this.street = street;
+        this.phone      = phone;
+        this.zip        = zip;
+        this.country    = country;
+        this.street     = street;
     }
 
     public Integer getAddressId() {
