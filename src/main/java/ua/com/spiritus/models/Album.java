@@ -7,7 +7,9 @@ import javax.persistence.*;
 public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "albumid")
     private Integer albumId;
+    @Column(name = "title")
     private String title;
 
     @ManyToOne
