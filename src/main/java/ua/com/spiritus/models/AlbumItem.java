@@ -1,13 +1,15 @@
 package ua.com.spiritus.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 
 
 @Entity
 @Table(name = "albumitem")
-public class AlbumItem {
+public class AlbumItem implements Serializable{
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,9 +23,9 @@ public class AlbumItem {
     @Column(name = "image")
     private byte[] image;
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "albumid", nullable = false)
-    private Album album;
+    private Album album;*/
 
     public AlbumItem() {
     }
@@ -32,7 +34,7 @@ public class AlbumItem {
         this.caption    = caption;
         this.itemDate   = itemDate;
         this.image      = image;
-        this.album      = album;
+        //this.album      = album;
     }
 
     public Integer getAlbumItemId() {
@@ -67,13 +69,13 @@ public class AlbumItem {
         this.image = image;
     }
 
-    public Album getAlbum() {
+   /* public Album getAlbum() {
         return album;
     }
 
     public void setAlbum(Album album) {
         this.album = album;
-    }
+    }*/
 
     @Override
     public boolean equals(Object o) {
@@ -85,8 +87,7 @@ public class AlbumItem {
         if (!albumItemId.equals(albumItem.albumItemId)) return false;
         if (caption != null ? !caption.equals(albumItem.caption) : albumItem.caption != null) return false;
         if (!itemDate.equals(albumItem.itemDate)) return false;
-        if (!Arrays.equals(image, albumItem.image)) return false;
-        return album.equals(albumItem.album);
+        return Arrays.equals(image, albumItem.image);
 
     }
 
@@ -96,7 +97,6 @@ public class AlbumItem {
         result = 31 * result + (caption != null ? caption.hashCode() : 0);
         result = 31 * result + itemDate.hashCode();
         result = 31 * result + Arrays.hashCode(image);
-        result = 31 * result + album.hashCode();
         return result;
     }
 
@@ -104,7 +104,7 @@ public class AlbumItem {
     public String toString() {
         return "AlbumItem{" +
                 "caption='" + caption + '\'' +
-                ", album=" + album +
+                //", album=" + album +
                 ", itemDate=" + itemDate +
                 '}';
     }

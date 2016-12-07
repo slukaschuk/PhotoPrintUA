@@ -1,14 +1,15 @@
 package ua.com.spiritus.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import ua.com.spiritus.models.User;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import ua.com.spiritus.servises.UserService;
+import ua.com.spiritus.models.User;
 
-@Controller
 
+@RestController
 public class UserController {
 
 
@@ -20,10 +21,9 @@ public class UserController {
     }
 
 
-    @RequestMapping("/create")
-    @ResponseBody
-    public String create(String login, String password) {
-        User user = null;
+    /*@RequestMapping(value = "/api/users")
+    public User create(@RequestParam(value = "login") String login, @RequestParam(value = "password") String password) {
+       User user = null;
         try {
             user = new User(login, password);
             userService.save(user);
@@ -31,8 +31,8 @@ public class UserController {
         catch (Exception ex) {
             return "Error creating the user: " + ex.toString();
         }
-        return "User succesfully created! (id = " + user.getUserId() + ")";
-    }
+        return "User succesfully created! (id = " + user.getUserId() + ")";*//*
+    }*/
 
 
     /*@RequestMapping("/delete")
@@ -49,20 +49,30 @@ public class UserController {
     }
 */
 
-    @RequestMapping("/get-by-login")
-    @ResponseBody
-    public String getByLogin(String login) {
-        String userId;
-        try {
-            User user = userService.findBylogin(login);
-            userId = String.valueOf(user.getUserId());
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> getUser(@PathVariable("id") Integer id) {
+        System.out.println("Fetching User with id " + id);
+        User user = userService.findById(id);
+        if (user == null) {
+            System.out.println("User with id " + id + " not found");
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
-        catch (Exception ex) {
-            return "User not found";
-        }
-        return "The user id is: " + userId;
+        return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
+   /* @RequestMapping(value = "/api/users/getbylogin", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> getByLogin(@RequestParam(value = "login") String login) {
+        User user  = null;
+        user       = userService.findBylogin(login);
+        return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/api/users/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> getById(@RequestParam(value = "id") Integer id) {
+        User user  = new User();
+        user.getUserId();
+        return new ResponseEntity<User>(user, HttpStatus.OK);
+    }*/
 /*
     @RequestMapping("/update")
     @ResponseBody

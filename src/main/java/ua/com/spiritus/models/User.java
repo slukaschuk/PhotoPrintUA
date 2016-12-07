@@ -1,13 +1,10 @@
 package ua.com.spiritus.models;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "user")
-public class User implements Serializable {
+public class User  {
 
 
     @Id

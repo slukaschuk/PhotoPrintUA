@@ -23,9 +23,9 @@ public class Address {
     @JoinColumn(name = "userid", nullable = false)
     private User user;
 
-    @ManyToOne
+   /* @ManyToOne
     @JoinColumn(name = "cityid", nullable = false)
-    private City city;
+    private City city;*/
 
     public Address() {
 
@@ -86,14 +86,6 @@ public class Address {
         this.user = user;
     }
 
-    public City getCity() {
-        return city;
-    }
-
-    public void setCity(City city) {
-        this.city = city;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -106,8 +98,7 @@ public class Address {
         if (zip != null ? !zip.equals(address.zip) : address.zip != null) return false;
         if (country != null ? !country.equals(address.country) : address.country != null) return false;
         if (street != null ? !street.equals(address.street) : address.street != null) return false;
-        if (!user.equals(address.user)) return false;
-        return city.equals(address.city);
+        return user.equals(address.user);
 
     }
 
@@ -119,7 +110,6 @@ public class Address {
         result = 31 * result + (country != null ? country.hashCode() : 0);
         result = 31 * result + (street != null ? street.hashCode() : 0);
         result = 31 * result + user.hashCode();
-        result = 31 * result + city.hashCode();
         return result;
     }
 
@@ -130,7 +120,7 @@ public class Address {
                 ", zip='" + zip + '\'' +
                 ", country='" + country + '\'' +
                 ", street='" + street + '\'' +
-                ", city=" + city +
+              //  ", city=" + city +
                 '}';
     }
 }
