@@ -1,12 +1,16 @@
 package ua.com.spiritus.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import ua.com.spiritus.servises.UserService;
 import ua.com.spiritus.models.User;
+
+import java.util.List;
 
 
 @RestController
@@ -21,36 +25,16 @@ public class UserController {
     }
 
 
-    /*@RequestMapping(value = "/api/users")
-    public User create(@RequestParam(value = "login") String login, @RequestParam(value = "password") String password) {
-       User user = null;
-        try {
-            user = new User(login, password);
-            userService.save(user);
-        }
-        catch (Exception ex) {
-            return "Error creating the user: " + ex.toString();
-        }
-        return "User succesfully created! (id = " + user.getUserId() + ")";*//*
-    }*/
+       //-------------------Retrieve All Users--------------------------------------------------------
 
-
-    /*@RequestMapping("/delete")
-    @ResponseBody
-    public String delete(Integer id) {
-        try {
-            User user = new User(id);
-            userDao.delete(user);
+    @RequestMapping(value = "/user/", method = RequestMethod.GET)
+    public ResponseEntity<List<User>> listAllUsers() {
+        List<User> users = userService.findAllUsers();
+        if(users.isEmpty()){
+            return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);
         }
-        catch (Exception ex) {
-            return "Error deleting the user:" + ex.toString();
-        }
-        return "User succesfully deleted!";
+        return new ResponseEntity<List<User>>(users, HttpStatus.OK);
     }
-*/
-
-
-    
     //-------------------Retrieve Single User--------------------------------------------------------
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getUser(@PathVariable("id") Integer id) {
@@ -63,35 +47,73 @@ public class UserController {
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
-   /* @RequestMapping(value = "/api/users/getbylogin", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> getByLogin(@RequestParam(value = "login") String login) {
-        User user  = null;
-        user       = userService.findBylogin(login);
-        return new ResponseEntity<User>(user, HttpStatus.OK);
+    //-------------------Create a User--------------------------------------------------------
+
+    @RequestMapping(value = "/user/", method = RequestMethod.POST)
+    public ResponseEntity<Void> createUser(@RequestBody User user,    UriComponentsBuilder ucBuilder) {
+        System.out.println("Creating User " + user.getLogin());
+
+        if (userService.isUserExist(user.getLogin())) {
+            System.out.println("A User with name " + user.getLogin() + " already exist");
+            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+        }
+
+        userService.saveUser(user);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/user/{id}").buildAndExpand(user.getUserId()).toUri());
+        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/api/users/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> getById(@RequestParam(value = "id") Integer id) {
-        User user  = new User();
-        user.getUserId();
-        return new ResponseEntity<User>(user, HttpStatus.OK);
-    }*/
-/*
-    @RequestMapping("/update")
-    @ResponseBody
-    public String updateUser(Integer id, String login, String password) {
-        try {
-            User user = userDao.findOne(id);
-            user.setLogin(login);
-            user.setPassword(password);
-            userDao.save(user);
-        }
-        catch (Exception ex) {
-            return "Error updating the user: " + ex.toString();
-        }
-        return "User succesfully updated!";
-    }
-*/
+    //------------------- Update a User --------------------------------------------------------
 
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<User> updateUser(@PathVariable("id") Integer id, @RequestBody User user) {
+        System.out.println("Updating User " + id);
+
+        User currentUser = userService.findById(id);
+
+        if (currentUser==null) {
+            System.out.println("User with id " + id + " not found");
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+
+        currentUser.setLogin(user.getLogin());
+        currentUser.setPassword(user.getPassword());
+        currentUser.setFirtsname(user.getFirtsname());
+        currentUser.setLastsname(user.getLastsname());
+
+
+        userService.updateUser(currentUser);
+        return new ResponseEntity<User>(currentUser, HttpStatus.OK);
+    }
+
+
+    //------------------- Delete a User --------------------------------------------------------
+
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<User> deleteUser(@PathVariable("id") Integer id) {
+        System.out.println("Fetching & Deleting User with id " + id);
+
+        User user = userService.findById(id);
+        if (user == null) {
+            System.out.println("Unable to delete. User with id " + id + " not found");
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
+
+        userService.deleteUserById(id);
+        return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+    }
+
+
+    //------------------- Delete All Users --------------------------------------------------------
+
+    @RequestMapping(value = "/user/", method = RequestMethod.DELETE)
+    public ResponseEntity<User> deleteAllUsers() {
+        System.out.println("Deleting All Users");
+
+        userService.deleteAllUsers();
+        return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+    }
 
 }

@@ -7,8 +7,5 @@ import ua.com.spiritus.models.User;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer>{
- /*   User findBylogin(String login);
-
-    @Override
-    User save(User user);*/
+   User findBylogin(String login);
 }
