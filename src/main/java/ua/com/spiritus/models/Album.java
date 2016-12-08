@@ -2,10 +2,10 @@ package ua.com.spiritus.models;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "album")
+//@Entity
+//@Table(name = "album")
 public class Album {
-    @Id
+  /*  @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "albumid")
     private Integer albumId;
@@ -74,5 +74,5 @@ public class Album {
                 "title='" + title + '\'' +
                 ", user=" + user +
                 '}';
-    }
+    }*/
 }

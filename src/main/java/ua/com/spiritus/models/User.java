@@ -6,9 +6,8 @@ import javax.persistence.*;
 @Table(name = "user")
 public class User  {
 
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "userid")
     private Integer userId;
     @Column(name = "login")
     private String login;

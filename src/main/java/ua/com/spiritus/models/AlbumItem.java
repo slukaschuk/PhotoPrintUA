@@ -8,8 +8,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "albumitem")
-public class AlbumItem implements Serializable{
-    private static final long serialVersionUID = 1L;
+public class AlbumItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,19 +22,19 @@ public class AlbumItem implements Serializable{
     @Column(name = "image")
     private byte[] image;
 
-    /*@ManyToOne
+    /*//*@ManyToOne
     @JoinColumn(name = "albumid", nullable = false)
     private Album album;*/
 
     public AlbumItem() {
     }
 
-    public AlbumItem(String caption, Date itemDate, byte[] image, Album album) {
+  /*  public AlbumItem(String caption, Date itemDate, byte[] image, Album album) {
         this.caption    = caption;
         this.itemDate   = itemDate;
         this.image      = image;
         //this.album      = album;
-    }
+    }*/
 
     public Integer getAlbumItemId() {
         return albumItemId;
@@ -75,7 +74,7 @@ public class AlbumItem implements Serializable{
 
     public void setAlbum(Album album) {
         this.album = album;
-    }*/
+    }*//*
 
     @Override
     public boolean equals(Object o) {
@@ -107,5 +106,5 @@ public class AlbumItem implements Serializable{
                 //", album=" + album +
                 ", itemDate=" + itemDate +
                 '}';
-    }
+    }*/
 }

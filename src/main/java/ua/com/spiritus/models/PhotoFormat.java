@@ -2,10 +2,10 @@ package ua.com.spiritus.models;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "photoformat")
+//@Entity
+//@Table(name = "photoformat")
 public class PhotoFormat {
-    @Id
+   /* @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "photoformatid")
     private Integer photoFormatId;
@@ -59,5 +59,5 @@ public class PhotoFormat {
         return "PhotoFormat{" +
                 "format='" + format + '\'' +
                 '}';
-    }
+    }*/
 }

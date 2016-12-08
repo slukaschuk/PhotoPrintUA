@@ -3,11 +3,11 @@ package ua.com.spiritus.models;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-@Table(name = "order")
+//@Entity
+//@Table(name = "order")
 public class Order {
 
-    @Id
+    /*@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer orderId;
     @Column(name = "orderdate")
@@ -118,6 +118,6 @@ public class Order {
                 ", userId=" + userId +
                 ", novaPoshtaId=" + novaPoshtaId +
                 '}';
-    }
+    }*/
 }
 

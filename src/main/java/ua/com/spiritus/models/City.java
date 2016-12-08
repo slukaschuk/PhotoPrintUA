@@ -2,10 +2,10 @@ package ua.com.spiritus.models;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "city")
+//@Entity
+//@Table(name = "city")
 public class City {
-    @Id
+    /*@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "cityid")
     private Integer cityId;
@@ -59,5 +59,5 @@ public class City {
         return "City{" +
                 "cityName='" + cityName + '\'' +
                 '}';
-    }
+    }*/
 }

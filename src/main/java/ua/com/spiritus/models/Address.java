@@ -3,10 +3,10 @@ package ua.com.spiritus.models;
 import javax.persistence.*;
 
 
-@Entity
-@Table(name = "address")
+//@Entity
+//@Table(name = "address")
 public class Address {
-    @Id
+   /* @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "adressid")
     private Integer addressId;
@@ -23,9 +23,9 @@ public class Address {
     @JoinColumn(name = "userid", nullable = false)
     private User user;
 
-   /* @ManyToOne
+   *//* @ManyToOne
     @JoinColumn(name = "cityid", nullable = false)
-    private City city;*/
+    private City city;*//*
 
     public Address() {
 
@@ -122,5 +122,5 @@ public class Address {
                 ", street='" + street + '\'' +
               //  ", city=" + city +
                 '}';
-    }
+    }*/
 }

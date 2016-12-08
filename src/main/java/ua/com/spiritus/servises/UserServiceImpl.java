@@ -7,8 +7,7 @@ import ua.com.spiritus.models.User;
 import ua.com.spiritus.repositories.UserRepository;
 
 
-@Service("userService")
-@Transactional
+@Service
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
