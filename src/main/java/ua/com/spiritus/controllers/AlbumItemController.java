@@ -1,14 +1,18 @@
 package ua.com.spiritus.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import ua.com.spiritus.models.AlbumItem;
-import ua.com.spiritus.servises.AlbumItemService;
+import ua.com.spiritus.services.AlbumItemService;
 
 @RestController
+@Slf4j
 public class AlbumItemController {
     private AlbumItemService albumItemService;
 
@@ -17,17 +21,27 @@ public class AlbumItemController {
         this.albumItemService = albumItemService;
     }
 
-    /*@RequestMapping(method = RequestMethod.GET, value = "/create")
-    public String create() {
-        AlbumItem albumItem = null;
-        try {
-            albumItem = new AlbumItem();
-            albumItemService.save(albumItem);
+    //-------------------Retrieve Single Photo--------------------------------------------------------
+    @RequestMapping(value = "/photo/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AlbumItem> getUser(@PathVariable("id") Integer id) {
+        System.out.println("Fetching photo with id " + id);
+        log.debug("Fetching photo with id {}",id);
+        AlbumItem albumItem = albumItemService.findById(id);
+        if (albumItem == null) {
+            System.out.println("Photo with id " + id + " not found");
+            return new ResponseEntity<AlbumItem>(HttpStatus.NOT_FOUND);
         }
-        catch (Exception ex) {
-            return "Error creating the photo: " + ex.toString();
-        }
-        return "Photo succesfully created! (id = " + albumItem.getAlbumItemId() + ")";
-    }*/
+        return new ResponseEntity<AlbumItem>(albumItem, HttpStatus.OK);
+    }
+
+    //-------------------Create a Photo ID--------------------------------------------------------
+    @RequestMapping(value = "/photo/", method = RequestMethod.POST)
+    public ResponseEntity<AlbumItem> createUser(@RequestBody AlbumItem albumItem, UriComponentsBuilder ucBuilder) {
+
+        albumItemService.save(albumItem);
+        return new ResponseEntity<AlbumItem>(albumItem, HttpStatus.CREATED);
+    }
+
+
 }
 

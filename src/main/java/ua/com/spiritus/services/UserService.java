@@ -1,4 +1,4 @@
-package ua.com.spiritus.servises;
+package ua.com.spiritus.services;
 
 import ua.com.spiritus.models.User;
 

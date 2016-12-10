@@ -1,4 +1,4 @@
-package ua.com.spiritus.servises;
+package ua.com.spiritus.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
