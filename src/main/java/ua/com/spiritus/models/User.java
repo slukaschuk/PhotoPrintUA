@@ -20,7 +20,7 @@ public class User  {
     private Integer userId;
     @Column(name = "login", unique = true, length = 200)
     @NotBlank
-    @Email
+   // @Email
     private String login;
     @Column(name = "first_name", length = 100)
     private String firtsName;

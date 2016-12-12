@@ -54,8 +54,8 @@ public class UserController {
     @RequestMapping(value = "/user/", method = RequestMethod.POST)
     public ResponseEntity<Void> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
         System.out.println("Creating User " + user.getLogin());
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        validator.validate(user);
+        /*Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        validator.validate(user);*/
 
         if (userService.isUserExist(user.getLogin())) {
             System.out.println("A User with name " + user.getLogin() + " already exist");
