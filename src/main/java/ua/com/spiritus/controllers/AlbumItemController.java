@@ -2,6 +2,7 @@ package ua.com.spiritus.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 import ua.com.spiritus.models.AlbumItem;
 import ua.com.spiritus.services.AlbumItemService;
+
 
 @RestController
 @Slf4j
@@ -22,15 +24,17 @@ public class AlbumItemController {
     }
 
     //-------------------Retrieve Single Photo--------------------------------------------------------
-    @RequestMapping(value = "/photo/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AlbumItem> getPhoto(@PathVariable("id") Integer id) {
+    @RequestMapping(value = "/photo/{id}", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> getPhoto(@PathVariable("id") Integer id) {
         log.info("Fetching photo with id {}", id);
         AlbumItem albumItem = albumItemService.findById(id);
         if (albumItem == null) {
             log.warn("Photo with id " + id + " not found");
-            return new ResponseEntity<AlbumItem>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<AlbumItem>(albumItem, HttpStatus.OK);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
+        return new ResponseEntity<byte[]>(albumItemService.getPhotoById(id), headers, HttpStatus.OK);
     }
 
     //-------------------Create a Photo ID--------------------------------------------------------
@@ -55,7 +59,5 @@ public class AlbumItemController {
             return new ResponseEntity<AlbumItem>(HttpStatus.NO_CONTENT);
         }
     }
-
-
 }
 

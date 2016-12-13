@@ -12,4 +12,7 @@ public interface AlbumItemService {
     boolean isAlbumItemExist(Integer albumItemId);
 
     boolean addPhoto(AlbumItem albumItem, MultipartFile file);
+
+    byte[] getPhotoById(Integer id);
+
 }

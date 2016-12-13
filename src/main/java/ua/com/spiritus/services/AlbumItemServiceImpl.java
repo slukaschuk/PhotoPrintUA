@@ -57,4 +57,17 @@ public class AlbumItemServiceImpl implements AlbumItemService {
 
         }
     }
+
+    @Override
+    public byte[] getPhotoById(Integer id) {
+        byte[] photo;
+        try {
+            AlbumItem albumitem = albumItemRepository.findOne(id);
+            photo = albumitem.getImage();
+            return photo;
+        } catch (Exception e) {
+            log.error("Getting photos of data caused the error => " + e.getMessage());
+        }
+       return new byte[0];
+    }
 }
