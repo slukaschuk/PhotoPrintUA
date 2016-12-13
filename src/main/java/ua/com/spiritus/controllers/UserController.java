@@ -1,5 +1,6 @@
 package ua.com.spiritus.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.List;
 
 
 @RestController
+@Slf4j
 public class UserController {
 
 
@@ -40,10 +42,10 @@ public class UserController {
     //-------------------Retrieve Single User--------------------------------------------------------
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getUser(@PathVariable("id") Integer id) {
-        System.out.println("Fetching User with id " + id);
+        log.info("Fetching User with id {}", id);
         User user = userService.findById(id);
         if (user == null) {
-            System.out.println("User with id " + id + " not found");
+            log.warn("User with id " + id + " not found");
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<User>(user, HttpStatus.OK);
@@ -53,12 +55,12 @@ public class UserController {
 
     @RequestMapping(value = "/user/", method = RequestMethod.POST)
     public ResponseEntity<Void> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
-        System.out.println("Creating User " + user.getLogin());
+        log.info("Creating User " + user.getLogin());
         /*Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         validator.validate(user);*/
 
         if (userService.isUserExist(user.getLogin())) {
-            System.out.println("A User with name " + user.getLogin() + " already exist");
+            log.warn("A User with name " + user.getLogin() + " already exist");
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
 
@@ -73,12 +75,12 @@ public class UserController {
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
     public ResponseEntity<User> updateUser(@PathVariable("id") Integer id, @RequestBody User user) {
-        System.out.println("Updating User " + id);
+        log.info("Updating User " + id);
 
         User currentUser = userService.findById(id);
 
         if (currentUser == null) {
-            System.out.println("User with id " + id + " not found");
+            log.warn("User with id " + id + " not found");
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
 
@@ -97,11 +99,11 @@ public class UserController {
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<User> deleteUser(@PathVariable("id") Integer id) {
-        System.out.println("Fetching & Deleting User with id " + id);
+        log.info("Fetching & Deleting User with id " + id);
 
         User user = userService.findById(id);
         if (user == null) {
-            System.out.println("Unable to delete. User with id " + id + " not found");
+            log.warn("Unable to delete. User with id " + id + " not found");
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
 
@@ -114,7 +116,7 @@ public class UserController {
 
     @RequestMapping(value = "/user/", method = RequestMethod.DELETE)
     public ResponseEntity<User> deleteAllUsers() {
-        System.out.println("Deleting All Users");
+        log.info("Deleting All Users");
 
         userService.deleteAllUsers();
         return new ResponseEntity<User>(HttpStatus.NO_CONTENT);

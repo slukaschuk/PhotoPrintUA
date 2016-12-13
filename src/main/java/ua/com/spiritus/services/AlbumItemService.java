@@ -11,5 +11,5 @@ public interface AlbumItemService {
 
     boolean isAlbumItemExist(Integer albumItemId);
 
-    boolean addPhoto(MultipartFile file);
+    boolean addPhoto(AlbumItem albumItem, MultipartFile file);
 }

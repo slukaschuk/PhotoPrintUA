@@ -2,7 +2,6 @@ package ua.com.spiritus.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +24,10 @@ public class AlbumItemController {
     //-------------------Retrieve Single Photo--------------------------------------------------------
     @RequestMapping(value = "/photo/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AlbumItem> getPhoto(@PathVariable("id") Integer id) {
-        System.out.println("Fetching photo with id " + id);
-        log.debug("Fetching photo with id {}",id);
+        log.info("Fetching photo with id {}", id);
         AlbumItem albumItem = albumItemService.findById(id);
         if (albumItem == null) {
-            System.out.println("Photo with id " + id + " not found");
+            log.warn("Photo with id " + id + " not found");
             return new ResponseEntity<AlbumItem>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<AlbumItem>(albumItem, HttpStatus.OK);
@@ -38,23 +36,23 @@ public class AlbumItemController {
     //-------------------Create a Photo ID--------------------------------------------------------
     @RequestMapping(value = "/photo/", method = RequestMethod.POST)
     public ResponseEntity<AlbumItem> createPhoto(@RequestBody AlbumItem albumItem, UriComponentsBuilder ucBuilder) {
-
         albumItemService.save(albumItem);
+        log.info("Photo with id " + albumItem.getAlbumItemId() + " was created");
         return new ResponseEntity<AlbumItem>(albumItem, HttpStatus.CREATED);
     }
 
     //-------------------Upload a Photo --------------------------------------------------------
-    @RequestMapping(value="/photo/{id}", method=RequestMethod.POST)
+    @RequestMapping(value = "/photo/{id}", method = RequestMethod.POST)
     public ResponseEntity<AlbumItem> uploadFoto(@PathVariable("id") Integer id,
-                                                 @RequestParam("file") MultipartFile file){
+                                                @RequestParam("file") MultipartFile file) {
         AlbumItem albumItem = albumItemService.findById(id);
         if (albumItem == null) {
-            System.out.println("Photo with id " + id + " not found");
+            log.warn("Photo with id " + id + " not found");
             return new ResponseEntity<AlbumItem>(HttpStatus.NOT_FOUND);
-        }
-        else {
-            albumItemService.addPhoto(file);
-            return new ResponseEntity<AlbumItem>(albumItem, HttpStatus.CREATED);
+        } else {
+            albumItemService.addPhoto(albumItem, file);
+            log.info("Photo with id " + id + " was upload");
+            return new ResponseEntity<AlbumItem>(HttpStatus.NO_CONTENT);
         }
     }
 

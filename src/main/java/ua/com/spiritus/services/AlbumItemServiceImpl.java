@@ -1,5 +1,6 @@
 package ua.com.spiritus.services;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,12 +8,11 @@ import org.springframework.web.multipart.MultipartFile;
 import ua.com.spiritus.models.AlbumItem;
 import ua.com.spiritus.repositories.AlbumItemRepository;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.time.LocalDateTime;
 
 @Service
 @Transactional
+@Slf4j
 public class AlbumItemServiceImpl implements AlbumItemService {
     private AlbumItemRepository albumItemRepository;
 
@@ -28,7 +28,7 @@ public class AlbumItemServiceImpl implements AlbumItemService {
 
     @Override
     public boolean isAlbumItemExist(Integer albumItemId) {
-        return albumItemRepository.findOne(albumItemId)!=null;
+        return albumItemRepository.findOne(albumItemId) != null;
     }
 
     @Override
@@ -37,23 +37,22 @@ public class AlbumItemServiceImpl implements AlbumItemService {
     }
 
     @Override
-    public boolean addPhoto(MultipartFile file) {
+    public boolean addPhoto(AlbumItem albumItem, MultipartFile file) {
         if (!file.isEmpty()) {
             try {
                 byte[] bytes = file.getBytes();
-                BufferedOutputStream stream =
-                        new BufferedOutputStream(new FileOutputStream(new File("c:/test/"+file.getOriginalFilename() + "-uploaded")));
-                stream.write(bytes);
-                stream.close();
-                System.out.println("Вы удачно загрузили " + file.getOriginalFilename() + " в " + file.getOriginalFilename() + "-uploaded !");
+                albumItem.setImage(bytes);
+                albumItem.setItemDate(LocalDateTime.now());
+                albumItemRepository.save(albumItem);
+                log.info("You successfully uploaded " + file.getOriginalFilename());
                 return true;
 
             } catch (Exception e) {
-                System.out.println("Вам не удалось загрузить " + file.getOriginalFilename() + " => " + e.getMessage());
+                log.error("You haven't uploaded " + file.getOriginalFilename() + " => " + e.getMessage());
                 return false;
             }
         } else {
-            System.out.println("Вам не удалось загрузить " + file.getOriginalFilename() + " потому что файл пустой.");
+            log.warn("You haven't uploaded " + file.getOriginalFilename() + " because file is empty.");
             return false;
 
         }
