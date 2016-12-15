@@ -15,4 +15,5 @@ public interface AlbumItemService {
 
     byte[] getPhotoById(Integer id);
 
+    boolean savePhotoForUser(Integer userId, AlbumItem albumItem);
 }

@@ -25,9 +25,9 @@ public class AlbumItem {
     @Lob
     private byte[] image;
 
-    /*//*@ManyToOne
-    @JoinColumn(name = "albumid", nullable = false)
-    private Album album;*/
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
 }

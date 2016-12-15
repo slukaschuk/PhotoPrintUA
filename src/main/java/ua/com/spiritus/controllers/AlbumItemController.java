@@ -36,15 +36,18 @@ public class AlbumItemController {
         headers.setContentType(MediaType.IMAGE_PNG);
         return new ResponseEntity<byte[]>(albumItemService.getPhotoById(id), headers, HttpStatus.OK);
     }
-
-    //-------------------Create a Photo ID--------------------------------------------------------
-    @RequestMapping(value = "/photo/", method = RequestMethod.POST)
-    public ResponseEntity<AlbumItem> createPhoto(@RequestBody AlbumItem albumItem, UriComponentsBuilder ucBuilder) {
-        albumItemService.save(albumItem);
-        log.info("Photo with id " + albumItem.getAlbumItemId() + " was created");
-        return new ResponseEntity<AlbumItem>(albumItem, HttpStatus.CREATED);
+    //-------------------Create a Photo ID for user--------------------------------------------------------
+    @RequestMapping(value = "/user/{userid}/photo/", method = RequestMethod.POST)
+    public ResponseEntity<AlbumItem> createPhotoForUser(@PathVariable("userid") Integer userId, @RequestBody AlbumItem albumItem, UriComponentsBuilder ucBuilder) {
+        boolean created = albumItemService.savePhotoForUser(userId, albumItem);
+        if (created) {
+            log.info("Photo for user with id " + userId + " was created with id" + albumItem.getAlbumItemId());
+            return new ResponseEntity<AlbumItem>(albumItem, HttpStatus.CREATED);
+        } else {
+            log.info("Photo for user with id " + userId + " wasn't created!");
+            return new ResponseEntity<AlbumItem>(HttpStatus.BAD_REQUEST);
+        }
     }
-
     //-------------------Upload a Photo --------------------------------------------------------
     @RequestMapping(value = "/photo/{id}", method = RequestMethod.POST)
     public ResponseEntity<AlbumItem> uploadFoto(@PathVariable("id") Integer id,

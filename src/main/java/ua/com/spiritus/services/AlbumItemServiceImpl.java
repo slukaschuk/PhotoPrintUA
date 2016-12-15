@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ua.com.spiritus.models.AlbumItem;
+import ua.com.spiritus.models.User;
 import ua.com.spiritus.repositories.AlbumItemRepository;
 
 import java.time.LocalDateTime;
@@ -15,15 +16,36 @@ import java.time.LocalDateTime;
 @Slf4j
 public class AlbumItemServiceImpl implements AlbumItemService {
     private AlbumItemRepository albumItemRepository;
+    private UserService userService;
 
     @Autowired
     public void setAlbumItemRepository(AlbumItemRepository albumItemRepository) {
         this.albumItemRepository = albumItemRepository;
     }
 
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
     @Override
     public AlbumItem save(AlbumItem albumItem) {
         return albumItemRepository.save(albumItem);
+    }
+
+    @Override
+    public boolean savePhotoForUser(Integer userId, AlbumItem albumItem) {
+        boolean saved = false;
+        User user = userService.findById(userId);
+        if (user!=null){
+            albumItem.setUser(user);
+            albumItemRepository.save(albumItem);
+            saved=true;
+        }
+        else{
+            log.warn("User with id " + userId + " not found");
+        }
+        return saved;
     }
 
     @Override
