@@ -10,6 +10,8 @@ import ua.com.spiritus.models.User;
 import ua.com.spiritus.repositories.AlbumItemRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -22,7 +24,6 @@ public class AlbumItemServiceImpl implements AlbumItemService {
     public void setAlbumItemRepository(AlbumItemRepository albumItemRepository) {
         this.albumItemRepository = albumItemRepository;
     }
-
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -91,5 +92,23 @@ public class AlbumItemServiceImpl implements AlbumItemService {
             log.error("Getting photos of data caused the error => " + e.getMessage());
         }
        return new byte[0];
+    }
+
+    @Override
+    public List<AlbumItem> findAllPhotoForOneUser(Integer userId) {
+        User user = userService.findById(userId);
+        if (user!=null){
+            return (List<AlbumItem>) albumItemRepository.findAllByUser(user);
+        }
+        else{
+            log.warn("User with id " + userId + " not found");
+            return (List<AlbumItem>)new ArrayList<AlbumItem>();
+        }
+
+    }
+
+    @Override
+    public List<AlbumItem> findAllPhoto() {
+        return (List<AlbumItem>) albumItemRepository.findAll();
     }
 }

@@ -15,5 +15,5 @@ import ua.com.spiritus.services.AlbumItemService;
 
 
 public class AlbumItemControllerTest {
-    private AlbumItemController sut = new AlbumItemController();
+    //private AlbumItemController sut = new AlbumItemController();
 }

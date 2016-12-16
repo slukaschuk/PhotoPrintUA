@@ -12,6 +12,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import ua.com.spiritus.models.AlbumItem;
 import ua.com.spiritus.services.AlbumItemService;
 
+import java.util.List;
+
 
 @RestController
 @Slf4j
@@ -35,6 +37,26 @@ public class AlbumItemController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
         return new ResponseEntity<byte[]>(albumItemService.getPhotoById(id), headers, HttpStatus.OK);
+    }
+    //-------------------Retrieve All Photo of one user--------------------------------------------------------
+
+    @RequestMapping(value = "/user/{userid}/photo/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<AlbumItem>> listAllPhotoForOneUser(@PathVariable("userid") Integer userId) {
+        List<AlbumItem> albumItems = albumItemService.findAllPhotoForOneUser(userId);
+        if (albumItems.isEmpty()) {
+            return new ResponseEntity<List<AlbumItem>>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<AlbumItem>>(albumItems, HttpStatus.OK);
+    }
+
+    //-------------------Retrieve All Photo--------------------------------------------------------
+    @RequestMapping(value = "/photo/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<AlbumItem>> listAllPhoto() {
+        List<AlbumItem> albumItems = albumItemService.findAllPhoto();
+        if (albumItems.isEmpty()) {
+            return new ResponseEntity<List<AlbumItem>>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<AlbumItem>>(albumItems, HttpStatus.OK);
     }
     //-------------------Create a Photo ID for user--------------------------------------------------------
     @RequestMapping(value = "/user/{userid}/photo/", method = RequestMethod.POST)

@@ -1,5 +1,6 @@
 package ua.com.spiritus.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +24,7 @@ public class AlbumItem {
     private LocalDateTime itemDate;
     @Column(name = "image")
     @Lob
+    @JsonIgnore
     private byte[] image;
 
     @ManyToOne

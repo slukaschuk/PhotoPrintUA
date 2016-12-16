@@ -1,5 +1,6 @@
 package ua.com.spiritus.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
@@ -27,6 +28,7 @@ public class User  {
     @Column(name = "last_name", length = 100)
     private String lastName;
     @Column(name = "password", length = 200)
+    @JsonIgnore
     private String password;
 
 
