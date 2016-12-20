@@ -1,2 +1,1 @@
-# PhotoPrintUA
-PHOTOPRINTUA APP SERVER API 
+PhotoPrint.UA service makes possible to print photos from your mobile device and deliver them a convenient way to the customer (courier, Nova Poshta, etc.) Get your memories on paper. Free your device from old photos.
