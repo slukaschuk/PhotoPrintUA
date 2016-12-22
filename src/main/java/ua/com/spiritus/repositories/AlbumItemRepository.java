@@ -9,7 +9,5 @@ import java.util.List;
 
 @Repository
 public interface AlbumItemRepository extends CrudRepository<AlbumItem,Integer>{
-
-
     List<AlbumItem> findAllByUser(User user);
 }

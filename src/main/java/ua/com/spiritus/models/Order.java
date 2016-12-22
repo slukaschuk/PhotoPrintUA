@@ -35,7 +35,7 @@ public class Order {
     private User user;
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails;
-    @Column(name = "summa")
+    @Column(name = "sum")
     private Float sum;
    /* @Column(name = "nova_poshta_id")
     private Integer novaPoshtaId;*/

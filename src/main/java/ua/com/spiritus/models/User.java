@@ -1,19 +1,19 @@
 package ua.com.spiritus.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.Type;
-import org.hibernate.validator.constraints.Email;
+import lombok.*;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.security.core.userdetails.UserDetails;
+import ua.com.spiritus.enums.Role;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
-@Setter
 @Getter
-public class User  {
+@Setter
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,7 +29,19 @@ public class User  {
     private String lastName;
     @Column(name = "password", length = 200)
     @JsonIgnore
+    @NotBlank
     private String password;
+    //Security
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<Role> authorities;
+    private boolean accountNonExpired;
+    private boolean accountNonLocked;
+    private boolean credentialsNonExpired;
+    private boolean enabled;
 
 
+    @Override
+    public String getUsername() {
+        return this.login;
+    }
 }

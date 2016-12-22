@@ -24,6 +24,6 @@ public class OrderDetail {
     private Short quantity;
     @Column(name = "price")
     private Float price;
-    @Column(name = "summa")
+    @Column(name = "sum")
     private Float sum;
 }

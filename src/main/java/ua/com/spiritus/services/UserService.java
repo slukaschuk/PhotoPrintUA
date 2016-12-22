@@ -1,11 +1,12 @@
 package ua.com.spiritus.services;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
 import ua.com.spiritus.models.User;
 
 import java.util.List;
 
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
 
     User findById(Integer id);
 
