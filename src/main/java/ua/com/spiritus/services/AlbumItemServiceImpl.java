@@ -39,17 +39,14 @@ public class AlbumItemServiceImpl implements AlbumItemService {
 
     @Override
     public boolean savePhotoForUser(Integer userId, AlbumItem albumItem) {
-        boolean saved = false;
         User user = userService.findById(userId);
-        if (user!=null){
+        if (user != null){
             albumItem.setUser(user);
             albumItemRepository.save(albumItem);
-            saved=true;
+            return true;
         }
-        else{
-            log.warn("User with id " + userId + " not found");
-        }
-        return saved;
+        log.warn("User with id " + userId + " not found");
+        return false;
     }
 
     @Override
